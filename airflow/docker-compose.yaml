@@ -20,7 +20,7 @@ services:
         condition: service_healthy
 
     volumes:
-      - ./dags:/opt/airflow/dags
+      - ./airflow/dags:/opt/airflow/dags
       - ../:/opt/project
 
     ports:
@@ -34,15 +34,10 @@ services:
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
 
-    command: >
-      bash -c "
-      airflow db upgrade &&
-      airflow users create
-      --username admin
-      --password admin
-      --firstname admin
-      --lastname admin
-      --role Admin
-      --email admin@test.com || true &&
-      airflow scheduler & airflow webserver
-      "
+    ccommand: >
+  bash -c "
+  airflow db upgrade &&
+  airflow users create --username admin --password admin --firstname admin --lastname admin --role Admin --email admin@test.com || true &&
+  airflow scheduler & 
+  airflow webserver
+  "
