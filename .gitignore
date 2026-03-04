@@ -3,6 +3,7 @@
 venv/
 airflow_env/
 airflow_envairflow_env/
+.env
 
 # Python artifacts
 **/__pycache__/
