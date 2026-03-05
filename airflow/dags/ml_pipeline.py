@@ -3,7 +3,6 @@ from airflow.operators.python import PythonOperator
 from datetime import datetime
 import sys
 
-# Add project path
 sys.path.append("/opt/project")
 
 def run_training():
@@ -15,10 +14,10 @@ with DAG(
     start_date=datetime(2024, 1, 1),
     schedule_interval="@daily",
     catchup=False,
-    tags=["mlops", "training"],
+    tags=["mlops"],
 ) as dag:
 
     train_model = PythonOperator(
         task_id="train_model",
-        python_callable=run_training,
+        python_callable=run_training
     )
