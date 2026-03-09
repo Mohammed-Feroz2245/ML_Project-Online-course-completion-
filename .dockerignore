@@ -1,0 +1,6 @@
+airflow/logs/
+airflow/logs/**
+**/logs/
+.venv/
+__pycache__/
+.git/
