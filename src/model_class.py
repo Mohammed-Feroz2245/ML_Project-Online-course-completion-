@@ -18,7 +18,6 @@ class CourseCompletionModel:
         if self.model is not None:
             return
 
-        # FIXED: Added region_name to match your infrastructure
         s3 = boto3.client("s3", region_name="eu-north-1")
 
         try:
@@ -40,6 +39,27 @@ class CourseCompletionModel:
         if self.model is None:
             self.load_model()
         
-        df = pd.DataFrame([input_data])
-        # Ensure the columns in df match what the model saw during training
+        # 1. Map the API input names to the Training column names
+        # This ensures 'mobile' becomes 'Mobile', etc.
+        mapped_data = {
+            'age': input_data['age'],
+            'hours_per_week': input_data['hours_per_week'],
+            'assignments_submitted': input_data['assignments_submitted'],
+            'Mobile': input_data['mobile'],
+            'Pager': input_data['pager'],
+            'Smart TV': input_data['smart_tv'],
+            'Tablet': input_data['tablet']
+        }
+        
+        # 2. Convert to DataFrame
+        df = pd.DataFrame([mapped_data])
+        
+        # 3. Ensure columns are in the EXACT order the model expects
+        # (Note: 'Desktop' is usually dropped by drop_first=True in training)
+        expected_order = [
+            'age', 'hours_per_week', 'assignments_submitted', 
+            'Mobile', 'Pager', 'Smart TV', 'Tablet'
+        ]
+        df = df[expected_order]
+        
         return int(self.model.predict(df)[0])
