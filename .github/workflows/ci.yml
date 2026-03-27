@@ -22,6 +22,7 @@ jobs:
           pip install pytest httpx
 
       - name: Run tests
+        # This tells your Python code "We are in GitHub, don't try to load the real model"
         env:
           CI: true
         run: pytest
@@ -29,7 +30,8 @@ jobs:
   build-and-push-api:
     runs-on: ubuntu-latest
     needs: test-api
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # CHANGED: Removed the 'main' branch restriction so it works on YOUR branch
+    if: github.event_name == 'push'
     steps:
       - uses: actions/checkout@v4
 

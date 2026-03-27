@@ -1,15 +1,19 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from src.model_class import CourseCompletionModel
+from contextlib import asynccontextmanager
 
-app = FastAPI()
 model = CourseCompletionModel()
 
-@app.on_event("startup")
-def startup_event():
+# Modern FastAPI lifespan instead of @app.on_event("startup")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     model.load_model()
+    yield
 
-class StudentInput(BaseModel):
+app = FastAPI(lifespan=lifespan)
+
+class PredictionInput(BaseModel):
     age: int
     hours_per_week: int
     assignments_submitted: int
@@ -20,10 +24,11 @@ class StudentInput(BaseModel):
     tablet: int
 
 @app.get("/")
-def home():
+def read_root():
     return {"message": "API is running"}
 
 @app.post("/predict")
-def predict_course(data: StudentInput):
-    result = model.predict(data.dict())
+def predict_course(data: PredictionInput):
+    # Use model_dump() instead of .dict() for Pydantic V2
+    result = model.predict(data.model_dump())
     return {"prediction": "Completed" if result == 1 else "Not Completed"}
