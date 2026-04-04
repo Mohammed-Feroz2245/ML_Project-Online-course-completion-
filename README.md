@@ -58,8 +58,6 @@ ML_MAIN_PROJECT/
 
 ## 📸 Preview
 
-![kweEo](https://github.com/user-attachments/assets/6a159188-f2fc-422c-9415-85c9a64bf072)
-
 ### 🔹 API (Swagger UI)
 ![Swagger UI](images/swagger.png)
 
@@ -72,6 +70,7 @@ ML_MAIN_PROJECT/
 ---
 
 ## 🏗️ Architecture Overview
+![kweEo](https://github.com/user-attachments/assets/6a159188-f2fc-422c-9415-85c9a64bf072)
 ```
 Dataset (CSV)
 │
