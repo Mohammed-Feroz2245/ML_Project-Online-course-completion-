@@ -23,3 +23,5 @@ airflow/airflow.db
 
 # OS
 .DS_Store
+
+mlruns/

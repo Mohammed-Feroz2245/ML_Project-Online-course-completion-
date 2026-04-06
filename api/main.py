@@ -1,10 +1,12 @@
+import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 from src.model_class import CourseCompletionModel
 from contextlib import asynccontextmanager
 from prometheus_fastapi_instrumentator import Instrumentator # NEW IMPORT
 
-model = CourseCompletionModel()
+IS_CI = os.getenv("CI") == "true"
+model = CourseCompletionModel(skip_loading=IS_CI)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
